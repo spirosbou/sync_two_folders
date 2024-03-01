@@ -1,8 +1,7 @@
 import os
 import argparse
 import time
-
-
+import shutil
 
 
 def check_folders_existance(source, replica):
@@ -16,6 +15,18 @@ def check_folders_existance(source, replica):
     if not os.path.isdir(replica):
         os.makedirs(replica)
         log_file(f'{replica} folder has been created')
+
+
+def sync_files(source, replica):
+    '''Copy the files from source folder to replica folder''' 
+    source_files = os.listdir(source)
+    for file in source_files:
+        source_folder = source + "\\" + file
+        if os.path.isdir(source_folder):
+            if file not in os.listdir(replica):
+                shutil.copytree(source_folder, replica + "\\" + file,  dirs_exist_ok=True)
+                print(f'Folder {file} was added')
+                log_file(f'Folder {file} was added')
         
 
 
@@ -37,4 +48,5 @@ if  __name__ == '__main__':
     args = parser.parse_args()
 
 log_file("***Start of synchronization***")
-check_folders_existance(args.source)
+check_folders_existance(args.source, args.replica)
+sync_files(args.source,args.replica)
