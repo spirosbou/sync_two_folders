@@ -48,6 +48,6 @@ Go to the project directory
 6) Press esc to exit edit mode
 7) Write :wq to write your crontab
 
-**If you to delete the running job:
+**If you want to delete the running job:
 1) Open Terminal
 2) Run crontab -r 
