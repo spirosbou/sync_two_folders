@@ -4,10 +4,16 @@ import argparse
 
 
 
-def check_folders_existance(source):
+def check_folders_existance(source, replica):
     '''Check if source folder exist'''
     if not os.path.isdir(source):
         raise argparse.ArgumentError(None, "Source folder does not exist")
+    
+
+    '''Check if replica folder exist, if not then create it'''    
+    if not os.path.isdir(replica):
+        os.makedirs(replica)
+        
 
 
 
