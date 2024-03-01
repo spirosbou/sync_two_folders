@@ -27,23 +27,35 @@ def sync_files(source, replica):
                 shutil.copytree(source_folder, replica + "\\" + file,  dirs_exist_ok=True)
                 print(f'Folder {file} was added')
                 log_file(f'Folder {file} was added')
-                
+
         else:          
             if file not in os.listdir(replica):
                 shutil.copy2(source+"\\"+file, replica)
                 print(f'{file} is copied to replica folder')
                 log_file(f'{file} is copied to replica folder')
 
+
+def remove_files(source, replica):
+    '''Remove synchronized files from the replica folder'''
+    replica_files = os.listdir(replica)
+    for file in replica_files:
+        replica_folder = replica + "\\" + file
+        if os.path.isdir(replica_folder):
+            if file not in os.listdir(source):
+                shutil.rmtree(replica_folder)
+                print(f'Folder "{file}" removed from replica')
+                log_file(f'Folder "{file}" removed from replica')
+        else:        
+            if file not in os.listdir(source):
+                os.remove(replica+"\\"+file)
+                print(f'{file} has been removed from source') 
+                log_file(f'{file} has been removed from source')
+
         
-
-
-
 def log_file(message):
     '''Prints information to the log_file'''
     log_information_from_file=open(args.log+"\\"+"LogFile.txt", "a", encoding="utf-8")
     log_information_from_file.write(message + " at " + time.ctime() + '\n')            
-
-
 
 
 
@@ -57,3 +69,4 @@ if  __name__ == '__main__':
 log_file("***Start of synchronization***")
 check_folders_existance(args.source, args.replica)
 sync_files(args.source,args.replica)
+remove_files(args.source,args.replica)
