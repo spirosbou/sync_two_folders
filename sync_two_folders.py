@@ -27,6 +27,13 @@ def sync_files(source, replica):
                 shutil.copytree(source_folder, replica + "\\" + file,  dirs_exist_ok=True)
                 print(f'Folder {file} was added')
                 log_file(f'Folder {file} was added')
+                
+        else:          
+            if file not in os.listdir(replica):
+                shutil.copy2(source+"\\"+file, replica)
+                print(f'{file} is copied to replica folder')
+                log_file(f'{file} is copied to replica folder')
+
         
 
 
